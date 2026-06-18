@@ -1,0 +1,2515 @@
+VeriFeed
+News Aggregator and Fake News Detection Platform
+Submitted in Partial Fulfillment of Requirements
+for the Degree of
+
+Bachelor of Science
+(Computer Science Hons)
+By
+
+Klaes Pinto
+Seat No: 31011123047
+Guide
+
+Dr. Avantika Mahadik
+
+Somaiya School of Basic and Applied Sciences
+Somaiya Vidyavihar University
+Vidyavihar, Mumbai - 400 077
+2023-26
+
+Somaiya Vidyavihar University
+Somaiya School of Basic and Applied Sciences
+Certificate
+This is to certify that the project report on dissertation entitled VeriFeed –
+News Aggregation and Fake News Detection Platform is a bonafide record of
+the dissertation work done by Klaes Pinto in the year 2025-26 under the
+guidance of Dr. Avantika Mahadik, Department of Information Technology
+and Computer Science in partial fulfillment of requirement for the Bachelor of
+Computer Science Honours degree in Somaiya School of Basic and Applied
+Sciences of Somaiya Vidyavihar University.
+
+_________________
+
+_____________________
+
+Guide / Co-Guide
+
+Programme Coordinator
+
+_________________
+
+_____________________
+
+Head of Department
+
+Director
+
+Date:
+Place: Mumbai-77
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+4
+
+Somaiya Vidyavihar University
+Somaiya School of Basic and Applied Sciences
+Certificate of Approval of Examiners
+This is to certify that the project report on dissertation entitled VeriFeed –
+News Aggregation and Fake News Detection Platform is a bonafide record of
+the dissertation work done by Klaes Pinto in partial fulfillment of requirement
+for the Bachelor of Computer Science Honours degree of Somaiya Vidyavihar
+University.
+
+______________________
+
+____________________
+
+External Examiner /Expert
+
+Internal Examiner/ Guide
+
+Date:
+Place: Mumbai-77
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+4
+
+Somaiya Vidyavihar University
+Somaiya School of Basic and Applied Sciences
+DECLARATION
+I declare that this written report submission represents the work done based on my and / or
+others’ ideas with adequately cited and referenced the original source. I also declare that I
+have adhered to all principles of academic honesty and integrity as I have not misinterpreted
+or fabricated or falsified any idea/data/fact/source/original work/ matter in my submission.
+I understand that any violation of the above will be cause for disciplinary action by the
+college and may evoke penal action from the sources which have not been properly cited or
+from whom proper permission is not sought.
+
+_______________________________
+Signature of the Student
+Klaes Pinto
+__________________________
+Name of the Student
+31011123047
+_______________________________
+Seat No.
+
+Date:
+Place: Mumbai-77
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+4
+
+EXECUTIVE SUMMARY
+One of the greatest problems of the current information era is the spread of false
+information on digital platforms. With billions of news articles, social media posts,
+and digital content being shared daily, distinguishing reliable information from
+fabricated or misleading content has become increasingly difficult for the average
+consumer. This phenomenon not only undermines public trust in legitimate journalism
+but also poses significant risks to democratic processes, public health, and social
+cohesion.
+VeriFeed is proposed and developed as a comprehensive, full-stack web application
+designed to address this critical information integrity challenge. The platform
+combines a personalized news aggregation system with an integrated machine
+learning-powered fake news detection engine, providing users with a unified interface
+to consume news content while simultaneously verifying its credibility. The system
+serves two distinct user roles: regular users who consume and verify news, and
+administrators who oversee the platform's content moderation and system health.
+The technical architecture employs the MERN stack (MongoDB, Express.js, React,
+Node.js) for the primary application layer, complemented by a Python FastAPI
+microservice that hosts the machine learning inference pipeline. The fake news
+detection system utilizes a fine-tuned RoBERTa transformer model trained on
+established datasets including the LIAR dataset (12,800 labelled statements from
+PolitiFact) and supplementary Kaggle datasets. The detection pipeline implements a
+multi-factor credibility scoring algorithm that combines ML classifier confidence
+(weighted 40%), source credibility assessment (40%), and Google Fact Check Tools
+API cross-referencing (20%) to produce a final credibility verdict.
+The platform integrates real-time news feeds from Currents API covering 70+
+countries, with topic-based personalization allowing users to curate their news
+experience across categories including politics, health, technology, business, science,
+entertainment, and sports. A dedicated community verification tool enables users to
+submit any article URL, headline text, or image for credibility analysis, with OCRbased text extraction for image inputs. The system achieves an estimated accuracy of
+75-85% on text-based classification, with transparent confidence reporting and
+community dispute mechanisms for continuous quality improvement.
+Security features include JWT-based authentication, bcrypt password hashing, email
+verification via Nodemailer, and Time-based One-Time Password (TOTP) two-factor
+authentication compatible with Google Authenticator. The administrative dashboard
+provides comprehensive oversight capabilities including article management, user
+moderation, verdict override controls, source credibility management, and real-time
+platform analytics.
+Bachelor of Science, Computer Science 2023-26 Batch
+
+5
+
+Contents
+List of Figures
+List of Tables
+Nomenclature
+1
+
+2
+
+3
+
+4
+
+5
+
+Introduction
+
+11-14
+
+1.1
+
+Introduction and background of the project
+
+11
+
+1.2
+
+Objectives of project and Problem Statement
+
+12
+
+1.3
+
+Scope, Advantages, and Applicability of project
+
+13
+
+1.4
+
+Document Segments
+
+14
+
+Survey of Technologies
+
+15-17
+
+2.1
+
+Existing technologies
+
+15
+
+2.2
+
+Technology implemented for the project
+
+16
+
+Requirement and Analysis
+
+18-24
+
+3.1
+
+Problem Statement with major modules
+
+18
+
+3.2
+
+Feasibility Study
+
+19
+
+3.3
+
+Software Requirement Specification
+
+20
+
+3.4
+
+Project Development Schedule
+
+23
+
+System Design
+
+25-37
+
+4.1
+
+System Architecture
+
+25
+
+4.2
+
+Use Case Diagrams
+
+27
+
+4.3
+
+Data Flow Diagrams
+
+31
+
+4.4
+
+Entity Relationship Diagram
+
+33
+
+4.5
+
+Activity Diagrams
+
+35
+
+4.6
+
+Sequence Diagrams
+
+37
+
+Implementation
+
+38-59
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+6
+
+6
+
+7
+
+5.1
+
+Implementation Details
+
+38
+
+5.2
+
+Module Descriptions
+
+40
+
+5.3
+
+API Reference Documentation
+
+41
+
+5.4
+
+Application Screenshots
+
+47
+
+Testing
+
+60-63
+
+6.1
+
+Testing Approach and Methodology
+
+60
+
+6.2
+
+Test Cases
+
+61
+
+Conclusion and Future Scope
+
+64-65
+
+7.1
+
+Conclusion
+
+64
+
+7.2
+
+Future Scope
+
+65
+
+References
+
+66-67
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+7
+
+List of Figures
+Sr. No.
+
+Name of the Figure
+
+Page No.
+
+1.1
+
+Project Development Schedule (Gantt Chart)
+
+24
+
+1.2
+
+System Architecture Diagram
+
+26
+
+1.3
+
+Use Case Diagram – User Sub-System
+
+27
+
+1.4
+
+Use Case Diagram – Admin Sub-System
+
+28
+
+1.5
+
+Use Case Diagram – ML Pipeline Sub-System
+
+29
+
+1.6
+
+Use Case Diagram – Authentication Sub-System
+
+30
+
+1.7
+
+Level-0 Data Flow Diagram (Context Diagram)
+
+31
+
+1.8
+
+Level-1 Data Flow Diagram
+
+32
+
+1.9
+
+Level-2 Data Flow Diagram
+
+33
+
+1.10
+
+Entity Relationship Diagram
+
+34
+
+1.11
+
+Activity Diagram – News Verification Flow
+
+35
+
+1.12
+
+Activity Diagram – User Registration & 2FA Setup
+
+36
+
+1.13
+
+Sequence Diagram – Fake News Detection Pipeline
+
+37
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+8
+
+List of Tables
+Sr. No.
+
+Name of the Table
+
+Page No.
+
+1.1
+
+Technology Implemented
+
+16
+
+1.2
+
+Feasibility Study
+
+19
+
+1.3
+
+Functional Requirements Definition
+
+20
+
+1.4
+
+Non-Functional Requirements
+
+22
+
+1.5
+
+Project Development Schedule
+
+23
+
+1.6
+
+Test Case: User Authentication & 2FA
+
+61
+
+1.7
+
+Test Case: News Verification Pipeline
+
+62
+
+1.8
+
+Test Case: Admin Dashboard Operations
+
+63
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+9
+
+Nomenclature
+Term / Abbreviation
+
+Meaning
+
+MERN
+
+MongoDB, Express.js, React, Node.js
+
+JWT
+
+JSON Web Token
+
+2FA
+
+Two-Factor Authentication
+
+TOTP
+
+Time-based One-Time Password
+
+NLP
+
+Natural Language Processing
+
+ML
+
+Machine Learning
+
+API
+
+Application Programming Interface
+
+REST
+
+Representational State Transfer
+
+OCR
+
+Optical Character Recognition
+
+RBAC
+
+Role-Based Access Control
+
+SRS
+
+Software Requirement Specification
+
+DFD
+
+Data Flow Diagram
+
+ER
+
+Entity Relationship
+
+CRUD
+
+Create, Read, Update, Delete
+
+FastAPI
+
+High-performance Python web framework for APIs
+
+RoBERTa
+
+Robustly Optimized BERT Pre-training Approach
+
+CDN
+
+Content Delivery Network
+
+ODM
+
+Object Data Modeling
+
+CORS
+
+Cross-Origin Resource Sharing
+
+URL
+
+Uniform Resource Locator
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+10
+
+1. Introduction
+This chapter introduces the foundational context and motivation behind the development of
+VeriFeed. It outlines the growing threat of misinformation in digital media, defines the core
+problem statement, and establishes the primary technical objectives. Additionally, it
+highlights the scope, advantages, and real-world applicability of the platform, concluding
+with the structural organization of this dissertation report.
+
+1.1 Introduction and Background of the Project
+The digital age has fundamentally transformed how information is created, distributed,
+and consumed globally. With over 4.9 billion internet users worldwide and social
+media platforms reaching unprecedented levels of engagement, the speed at which
+news travels has increased exponentially. However, this rapid dissemination carries a
+critical vulnerability: the equally rapid spread of misinformation, disinformation, and
+fabricated news content. Studies indicate that false news stories are way more likely to
+be shared than true stories, and they reach their first 1000+ readers approximately six
+times faster than factual content.
+The consequences of unchecked misinformation extend far beyond individual
+deception. During the COVID-19 pandemic, the World Health Organization coined
+the term "infodemic" to describe the overwhelming flood of information — much of it
+false or misleading — that accompanied the health crisis. Political misinformation has
+been documented to influence election outcomes, health misinformation has led to
+dangerous self-medication practices, and financial misinformation has caused
+significant market disruptions.
+Currently, the landscape of news consumption is fragmented. Users typically rely on
+multiple platforms — news websites, social media feeds, messaging apps, and email
+newsletters — to stay informed. Each of these sources presents information with
+varying levels of editorial oversight and fact-checking. While professional factchecking organizations like PolitiFact, Snopes, and Full Fact provide valuable
+services, their manual verification processes are inherently slow and cannot match the
+volume of content being produced daily.
+VeriFeed addresses this critical gap by proposing an integrated solution that combines
+two essential functions: personalized news aggregation from verified sources with
+automated credibility verification powered by machine learning. The platform is
+designed as a full-stack web application utilizing the MERN stack for the primary
+interface and a Python FastAPI microservice for the ML inference pipeline. By
+providing users with both curated news content and the tools to independently verify
+Bachelor of Science, Computer Science 2023-26 Batch
+
+11
+
+any piece of information, VeriFeed aims to foster a more informed and critically
+engaged digital citizenry.
+
+1.2 Objectives of the Project and Problem Statement
+Problem Statement
+The absence of a unified platform that combines real-time news aggregation with
+integrated credibility verification forces users to choose between convenience and
+accuracy. Existing news aggregators (Google News, Flipboard, Apple News)
+prioritize engagement metrics over content verification, while dedicated fact-checking
+tools require users to leave their news consumption environment to verify individual
+claims. This fragmented experience creates cognitive friction that discourages
+verification behavior, leaving users vulnerable to misinformation.
+
+Objectives
+The primary objectives of the VeriFeed platform are as follows:
+• Personalized News Aggregation Engine: To build a news feed system that
+fetches real-time articles from multiple sources via Currents API, filtered by userselected topic preferences (politics, health, technology, business, science,
+entertainment, sports), delivering a curated reading experience.
+• Multi-Factor Fake News Detection Pipeline: To develop and deploy an MLpowered credibility scoring system that combines transformer-based text
+classification (RoBERTa), source credibility assessment, and Google Fact Check
+Tools API cross-referencing to produce a weighted credibility verdict for every
+article.
+• Community Verification Tool: To provide users with the ability to submit any
+article URL, headline text, or image for on-demand credibility analysis, with OCRbased text extraction from image inputs using Tesseract.
+• Secure Authentication Framework: To implement a comprehensive security
+layer including JWT-based authentication with refresh token rotation, bcrypt
+password hashing, email verification, and TOTP-based two-factor authentication
+compatible with Google Authenticator.
+• Administrative Oversight Dashboard: To create a separate admin interface
+providing complete platform management capabilities including article
+moderation, user management, ML verdict override, source credibility
+management, and real-time analytics.
+• Credibility Transparency: To ensure all credibility assessments are transparent,
+showing users the breakdown of how scores were calculated, including ML
+confidence, source rating, and fact-check evidence, enabling informed judgment
+rather than blind trust in automated systems.
+Bachelor of Science, Computer Science 2023-26 Batch
+
+12
+
+1.3 Scope, Advantages, and Applicability of the Project
+Scope
+The current scope of VeriFeed encompasses text-based fake news detection for
+English-language news content. The ML classifier is trained on the LIAR dataset
+(12,800 labelled statements across six credibility classes) and supplementary Kaggle
+datasets containing 40,000+ articles. The system aggregates news from Currents API
+with coverage across 70+ countries, with topic filtering for seven predefined
+categories. Image-based submissions are processed through OCR text extraction rather
+than visual misinformation detection. The platform supports up to 1,000 API requests
+per day on the free tier.
+
+Advantages
+• Unified Experience: Eliminates the need to switch between separate news
+reading and fact-checking applications by integrating both functionalities into a
+single platform.
+• Real-Time Credibility Scoring: Every article in the user's feed is automatically
+assessed and tagged with a credibility badge (green = credible, amber = uncertain,
+red = flagged), enabling at-a-glance information quality assessment.
+• Multi-Factor Analysis: Unlike single-method approaches, the credibility score
+combines three independent signals — ML classification, source reputation, and
+fact-check evidence — reducing single-point-of-failure risk in the assessment
+pipeline.
+• Community-Driven Quality Assurance: The upvote/downvote system on
+verdicts and the dispute mechanism (triggering admin review when >60% of users
+disagree) creates a human-in-the-loop correction system for ML errors.
+• Enterprise-Grade Security: Full JWT lifecycle management, 2FA, email
+verification, and RBAC provide a security posture appropriate for a platform
+handling sensitive information credibility data.
+• Scalable Architecture: The microservice-based design (Node.js for the API,
+FastAPI for ML inference) enables independent scaling of the compute-intensive
+ML pipeline without affecting the primary application layer.
+
+Applicability
+• General Public: Any internet user seeking reliable news consumption with builtin verification tools.
+• Educational Institutions: Media literacy programs can leverage the platform as
+a teaching tool for critical evaluation of information sources.
+• Journalists & Researchers: As a preliminary verification tool for source
+credibility assessment before in-depth investigation.
+Bachelor of Science, Computer Science 2023-26 Batch
+
+13
+
+• Corporate Communications: Organizations monitoring media coverage can use
+the credibility scoring to assess the reliability of reporting about their sector.
+
+1.4 Document Segments
+This dissertation report is organized into seven chapters, each addressing a specific
+aspect of the VeriFeed platform development lifecycle:
+1. Introduction: Presents the background context, problem statement, objectives,
+scope, advantages, and applicability of the project.
+2. Survey of Technologies: Examines existing solutions in the news aggregation
+and fake news detection space, followed by a detailed analysis of the technologies
+selected for implementation.
+3. Requirement and Analysis: Defines the major modules, conducts a
+comprehensive feasibility study, specifies functional and non-functional
+requirements, and outlines the project development schedule.
+4. System Design: Presents the system architecture, UML diagrams (use case, data
+flow, entity relationship, activity, and sequence diagrams), and the overall design
+blueprint of the platform.
+5. Implementation: Details the implementation process including folder structure,
+key code modules, API integrations, and application screenshots.
+6. Testing: Documents the testing methodology, test cases, and validation results
+for all critical system functionalities.
+7. Conclusion and Future Scope: Summarizes the project outcomes, discusses
+limitations, proposes future enhancements, and lists all references used.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+14
+
+2. Survey of Technologies
+This chapter surveys existing technologies and solutions in the news aggregation and fake
+news detection domains. It evaluates their strengths and limitations before presenting the
+technology stack selected for the VeriFeed platform, justifying each choice based on
+performance, scalability, and project requirements.
+
+2.1 Existing Technologies
+Several platforms and tools currently address aspects of the news verification and
+aggregation problem. A critical analysis of the most prominent solutions reveals both
+their contributions and their limitations:
+
+2.1.1 Google News
+Google News is the most widely used news aggregation service, leveraging Google's
+search algorithms to curate news from thousands of sources. It offers topic-based
+personalization and "Full Coverage" views that present multiple perspectives on a
+story. However, Google News does not provide explicit credibility scoring for
+individual articles. Its ranking algorithm prioritizes relevance and engagement over
+verified accuracy, and it does not offer users any mechanism to independently verify
+content through the platform.
+
+2.1.2 Snopes and PolitiFact
+Snopes and PolitiFact represent the gold standard in manual fact-checking. PolitiFact's
+"Truth-O-Meter" provides nuanced credibility ratings from "True" to "Pants on Fire."
+However, both services rely entirely on human fact-checkers, creating inherent
+bottlenecks. A typical fact-check takes hours to days to complete, making these
+services unsuitable for real-time verification. They also operate as standalone
+platforms, requiring users to actively seek them out rather than integrating into the
+news consumption workflow.
+
+2.1.3 ClaimBuster
+ClaimBuster is an academic project from the University of Texas Arlington that uses
+NLP to identify "check-worthy" claims in text. While it effectively identifies factual
+claims that warrant verification, it does not perform the actual verification step. It
+serves as a claim detection tool rather than a complete fake news detection system. Its
+API access is limited and not designed for consumer-facing applications.
+
+2.1.4 NewsGuard
+Bachelor of Science, Computer Science 2023-26 Batch
+
+15
+
+NewsGuard provides browser-based trust ratings for news websites using a
+combination of human journalists and transparency criteria. While effective for
+source-level assessment, it operates as a paid subscription service and evaluates
+sources rather than individual articles. A reliable source may publish an inaccurate
+article, and NewsGuard's source-level rating would not detect this.
+
+2.2 Technology Implemented for the Project
+The following technologies were selected for the VeriFeed platform based on
+performance requirements, ecosystem maturity, community support, and alignment
+with the project's architectural goals:
+Table 1.1: Technology Implemented
+
+Technology
+
+Category
+
+Purpose & Justification
+
+React 19
+
+Frontend
+
+Component-based UI library with virtual DOM
+for high-performance rendering. Selected for its
+large ecosystem, React Router for SPA
+navigation, and Context API for state
+management.
+
+Node.js
+
+Backend
+Runtime
+
+Event-driven, non-blocking I/O runtime ideal for
+handling concurrent API requests from multiple
+news sources and user submissions
+simultaneously.
+
+Express.js
+
+Backend
+Framework
+
+Minimalist web framework providing robust
+routing, middleware support for JWT
+authentication, CORS handling, and RESTful API
+design patterns.
+
+MongoDB
+
+Database
+
+NoSQL document database chosen for its flexible
+schema design, which accommodates varying
+article structures from multiple news sources
+without rigid table schemas.
+
+Python FastAPI
+
+ML
+High-performance async Python framework for
+Microservice the ML inference endpoint. Automatic API
+documentation via OpenAPI, native async
+support, and seamless integration with
+HuggingFace Transformers.
+
+HuggingFace
+
+ML Library
+
+Provides pre-trained RoBERTa model
+(hamzab/roberta-fake-news-classification) fine-
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+16
+
+Transformers
+
+tuned for fake news detection, eliminating the
+need for training from scratch.
+
+Currents API
+
+News Data
+
+Free news aggregation API with 1,000 daily
+requests, covering 70+ countries and supporting
+topic-based filtering directly aligned with user
+preference system.
+
+Google Fact
+Check Tools API
+
+Fact
+Verification
+
+Google's official fact-check search API providing
+access to claim reviews from verified factchecking organizations worldwide.
+
+node-cron
+
+Cache/Queue In-memory data store used with node-cron for
+scheduled background jobs (scheduled news
+fetching, batch ML inference).
+
+Nodemailer
+
+Email
+Service
+
+Node.js module for sending verification emails,
+password reset links, and weekly digest
+notifications via SMTP.
+
+Speakeasy
+
+2FA Library
+
+Generates TOTP secrets and QR codes
+compatible with Google Authenticator for twofactor authentication implementation.
+
+Tesseract.js /
+pytesseract
+
+OCR Engine
+
+Extracts text from uploaded images, enabling the
+credibility pipeline to analyze image-based news
+submissions.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+17
+
+3. Requirement and Analysis
+This chapter defines the core problem statement with its major functional modules, conducts
+a multi-dimensional feasibility study, specifies the complete software requirements
+(functional and non-functional), and presents the project development schedule with timeline
+visualization.
+
+3.1 Problem Statement with Major Modules
+Problem Statement: Design and develop a full-stack web application that provides
+personalized news aggregation from multiple sources with an integrated machine
+learning-powered fake news detection system, enabling users to both consume curated
+news content and independently verify the credibility of any article, headline, or
+image through a multi-factor analysis pipeline.
+The platform is decomposed into the following major modules:
+• Module 1 — Authentication & User Management: Handles user registration
+with email verification, JWT-based login with refresh tokens, password validation
+and hashing, TOTP 2FA setup, and role-based access control (user/admin).
+• Module 2 — News Aggregation Engine: Fetches real-time headlines from
+Currents API filtered by user preferences, stores articles in MongoDB, auto-runs
+each through the ML pipeline via cron jobs every 30 minutes, and serves the
+personalized feed to the frontend.
+• Module 3 — Fake News Detection Pipeline (ML Microservice): Accepts text
+input via FastAPI /predict endpoint, runs RoBERTa classifier inference, performs
+source credibility lookup, queries Google Fact Check Tools API, and returns a
+weighted composite credibility score.
+• Module 4 — Community Verification Tool: Enables manual submissions
+(URL, text, or image), processes images via OCR, generates detailed verdict
+pages, and implements upvote/downvote community feedback with dispute
+flagging.
+• Module 5 — Admin Dashboard: Provides overview analytics, article
+management with verdict override, user management and moderation, flagged
+submission review, source credibility list management, and broadcast notification
+capabilities.
+• Module 6 — Notification System: Delivers in-app and email notifications for
+verdict updates and bookmarked article changes, admin broadcasted messages,
+verification links, and password reset flows.
+Bachelor of Science, Computer Science 2023-26 Batch
+
+18
+
+3.2 Feasibility Study
+A comprehensive feasibility analysis was conducted across four dimensions to assess
+the viability of the VeriFeed platform before development commenced:
+Table 1.2: Feasibility Study
+
+Feasibility
+Type
+
+Assessment
+
+Verdict
+
+Technical
+Feasibility
+
+All core technologies (MERN, FastAPI, HuggingFace
+Feasible
+Transformers) are mature, well-documented, and
+widely adopted in production environments. Pre-trained
+RoBERTa models eliminate the need for training
+infrastructure. Free-tier APIs (Currents, Google Fact
+Check) provide sufficient request volumes for the
+MVP.
+
+Economic
+Feasibility
+
+The project is highly economically feasible as it relies
+entirely on open-source frameworks (React, Node.js,
+FastAPI) and free-tier services for local development.
+The external integrations, including MongoDB (free
+tier), Currents API (free tier), and Google Fact Check
+Tools API, incur zero cost. Furthermore, utilizing pretrained machine learning models from HuggingFace
+eliminates the massive computing costs associated with
+training custom models. Total development cost: $0.
+No specialized hardware procurement is required.
+
+Operational
+Feasibility
+
+The platform is designed for general internet users
+Feasible
+familiar with standard web applications. The
+onboarding flow guides preference selection, credibility
+badges provide intuitive visual indicators, and the
+verification tool follows a simple submit-and-view
+pattern requiring no technical knowledge.
+
+Schedule
+Feasibility
+
+The project is scoped for completion within a 4-week
+window using an Agile methodology. Pre-trained
+models, pre-built UI component libraries, and managed
+cloud services significantly reduce development
+overhead. Core features are prioritized with admin and
+2FA features implemented in later windows.
+
+Feasible
+
+Feasible
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+19
+
+3.3 Software Requirement Specification
+The Software Requirement Specification (SRS) is the foundational blueprint of the
+system. It strictly defines what the system must do (Functional Requirements) and
+how the system must perform (Non-Functional Requirements).
+
+3.3.1 Functional Requirements
+Functional requirements define the specific behaviors, computational functions, and
+data manipulation tasks the VeriFeed platform must execute. The following table
+highlights the most critical functional workflows engineered into the system.
+
+3.3.2 Functional Requirements Definition
+Table 1.3: Functional Requirements Definition
+
+Requirement Target
+ID
+Module
+
+Description of Required Functionality
+
+Priority
+
+FR-01
+
+Authentication The system must utilize JSON Web
+Gateway
+Tokens (JWT) with access token (15 min)
+and refresh token (7 days) lifecycle for
+stateless authentication, routing users to
+their role-specific dashboards upon login.
+
+High
+
+FR-02
+
+News
+Aggregation
+
+The system must fetch real-time news
+headlines from Currents API every 30
+minutes, filtered by the seven predefined
+topic categories, storing each article with
+its computed credibility score.
+
+High
+
+FR-03
+
+ML Pipeline
+
+The FastAPI /predict endpoint must accept High
+article text, execute RoBERTa inference,
+perform source lookup, query Google Fact
+Check API, and return a composite
+credibility score within 5 seconds.
+
+FR-04
+
+Verification
+Tool
+
+Users must be able to submit URLs, plain High
+text, or images. Image submissions must
+be processed through OCR to extract text
+before pipeline analysis. A detailed verdict
+page must be displayed post-analysis.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+20
+
+FR-05
+
+User
+Preferences
+
+On first login, users must be prompted to
+select 3–5 topic preferences from
+predefined categories. These preferences
+must persist and control all feed content
+filtering.
+
+Medium
+
+FR-06
+
+Admin
+Dashboard
+
+Admin users must have access to article
+management (view/override/delete), user
+management (suspend/ban/reset), flagged
+submission review, and source credibility
+list CRUD operations.
+
+High
+
+FR-07
+
+Community
+Feedback
+
+Users must be able to upvote/downvote
+Medium
+ML verdicts. Articles with >60%
+downvotes must be auto-flagged for admin
+review.
+
+FR-08
+
+2FA Module
+
+The system must support TOTP-based
+2FA using the speakeasy library,
+generating QR codes for Google
+Authenticator pairing, and requiring 6digit code entry on subsequent logins.
+
+Medium
+
+FR-09
+
+Bookmarks
+
+Users must be able to save articles to a
+personal bookmarks collection, filterable
+by topic and credibility level.
+
+Low
+
+FR-10
+
+Search
+
+Full-text search across all articles by
+keyword, with filters for topic, source,
+date range, and credibility level.
+
+Medium
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+21
+
+3.3.3 Non-Functional Requirements
+Table 1.4: Non-Functional Requirements
+
+NFR Category Requirement Description
+Performance
+
+News feed must load within 2 seconds. ML inference must
+complete within 5 seconds for single article analysis. Dashboard
+must render within 3 seconds.
+
+Scalability
+
+The microservice architecture must allow independent scaling of
+the ML pipeline without affecting the primary Node.js application
+layer.
+
+Security
+
+All passwords must be hashed with bcrypt (12 salt rounds). JWTs
+must use RS256 signing. All API endpoints must validate
+authentication middleware. CORS must be restricted to the
+frontend domain.
+
+Availability
+
+The system must maintain 95% uptime during the academic
+demonstration period. Render free-tier cold starts must be
+documented and mitigated where possible.
+
+Usability
+
+The interface must be intuitive for non-technical users. Credibility
+badges (green/amber/red) must be immediately recognizable.
+Onboarding must be completable in under 60 seconds.
+
+Reliability
+
+ML predictions must achieve 75-85% accuracy on the test dataset.
+Confidence scores below 60% must display uncertainty
+disclaimers.
+
+Maintainability
+
+Codebase must follow modular architecture with clear separation
+of concerns. All API endpoints must be documented. Environment
+variables must be externalized via .env files.
+
+Compatibility
+
+The application must function correctly on all desktop-based
+browsers. Responsive design must support viewport widths from
+360px to 1920px.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+22
+
+3.4 Project Development Schedule
+The project follows an accelerated Agile development methodology with a 4-week
+timeline. Tasks are prioritized based on dependency chains and criticality to the core
+value proposition.
+Table 1.5: Project Development Schedule
+
+Day
+
+Phase
+
+Tasks
+
+Week Foundation
+1
+
+Project setup (MERN boilerplate, folder structure),
+MongoDB schema design, Authentication system (JWT +
+bcrypt + email verification), User registration & login
+flows, Basic React routing
+
+Week Core Features
+2
+
+News aggregation engine (Currents API integration),
+Personalized feed with topic filtering, FastAPI ML
+microservice setup, RoBERTa model loading & /predict
+endpoint, Credibility scoring algorithm implementation
+
+Week Verification
+3
+& Admin
+
+Community verification tool (URL/text/image submission),
+OCR integration for images, Verdict page with score
+breakdown, Admin dashboard (article management, user
+management), 2FA implementation with speakeasy
+
+Week Polish &
+4
+Testing
+
+Bookmarks, search, trending misinformation page,
+Notification system, UI polish and responsive design,
+Testing and bug fixes.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+23
+
+Task
+
+W1
+A
+
+Project Setup & Boilerplate
+
+■
+
+MongoDB Schema Design
+
+■
+
+W1
+B
+
+JWT Auth + Registration
+
+■
+
+Email Verification
+
+■
+
+W2
+A
+
+News API Integration
+
+■
+
+Personalized Feed UI
+
+■
+
+W2
+B
+
+FastAPI ML Service Setup
+
+■
+
+RoBERTa Integration
+
+■
+
+Credibility Scoring
+
+■
+
+W3
+A
+
+Verification Tool
+
+■
+
+OCR Processing
+
+■
+
+W3
+B
+
+Admin Dashboard
+
+■
+
+2FA Setup
+
+■
+
+W4
+A
+
+Bookmarks & Search
+
+■
+
+Notifications
+
+■
+
+W4
+B
+
+UI Polish
+
+■
+
+Testing
+
+■
+
+■ Day 1: Foundation ■ Day 2: Core Features ■ Day 3: Verification & Admin ■ Day 4: Polish & Testing
+
+Figure 1.1: Project Development Schedule (Gantt Chart)
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+24
+
+4. System Design
+This chapter presents the complete system design of the VeriFeed platform through multiple
+architectural perspectives. It includes the high-level system architecture, UML use case
+diagrams for each sub-system, multi-level data flow diagrams, entity relationship diagrams,
+activity diagrams, and sequence diagrams — providing a comprehensive blueprint of the
+platform's design.
+
+4.1 System Architecture
+The VeriFeed platform follows a microservice-oriented architecture with clear
+separation between the presentation layer (React), business logic layer
+(Node.js/Express), data layer (MongoDB), and ML inference layer (Python FastAPI).
+The following diagram illustrates the high-level system architecture:
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+25
+
+Client Layer (Browser)
+React 19 SPA | React Router | Axios HTTP | Auth Context / JWT
+
+REST API Calls
+
+API Layer (Node.js + Express)
+Auth Routes | News Routes | Verify Routes | Admin Routes | User Routes
+JWT Middleware | RBAC Middleware
+
+Data Layer
+MongoDB
+Users | Articles | Sources
+
+ML Inference Layer
+Python FastAPI Microservice
+RoBERTa | Source Lookup | Fact Check
+
+External Services
+Currents API (News Feed) | Google Fact Check (Verification)
+Nodemailer (SMTP Email)
+
+Figure 1.2: System Architecture Diagram
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+26
+
+4.2 Use Case Diagrams
+Use case diagrams model the functional requirements of the system from the
+perspective of external actors. The VeriFeed platform is decomposed into four subsystems, each with its own use case diagram.
+
+4.2.1 User Sub-System
+
+Figure 1.3: Use Case Diagram – User Sub-System
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+27
+
+4.2.2 Admin Sub-System
+
+Figure 1.4: Use Case Diagram – Admin Sub-System
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+28
+
+4.2.3 ML Pipeline Sub-System
+
+Figure 1.5: Use Case Diagram – ML Pipeline Sub-System
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+29
+
+4.2.4 Authentication Sub-System
+
+Figure 1.6: Use Case Diagram – Authentication Sub-System
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+30
+
+4.3 Data Flow Diagrams
+4.3.1 Level-0 DFD (Context Diagram)
+
+Figure 1.7: Level-0 Data Flow Diagram (Context Diagram)
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+31
+
+4.3.2 Level-1 Data Flow Diagram
+
+Figure 1.8: Level-1 Data Flow Diagram
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+32
+
+4.3.3 Level-2 Data Flow Diagram
+
+Figure 1.9: Level-2 Data Flow Diagram
+
+4.4 E-R Diagram
+The Entity Relationship Diagram represents the database schema design for the
+VeriFeed platform, showing all five primary collections and their relationships within
+MongoDB.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+33
+
+Figure 1.10: Entity Relationship Diagram
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+34
+
+4.5 Activity Diagrams
+4.5.1 Activity Diagram – News Verification Flow
+
+Figure 1.11: Activity Diagram – News Verification Flow
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+35
+
+4.5.2 Activity Diagram – User Registration & 2FA Setup
+
+Figure 1.12: Activity Diagram – User Registration & 2FA Setup
+Bachelor of Science, Computer Science 2023-26 Batch
+
+36
+
+4.6 Sequence Diagrams
+4.6.1 Sequence Diagram – Fake News Detection Pipeline
+
+Figure 1.13: Sequence Diagram – Fake News Detection Pipeline
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+37
+
+5. Implementation
+This chapter details the implementation process of the VeriFeed platform, covering the
+project folder structure, key code modules, API integration patterns, and the deployment
+configuration. Application screenshots demonstrating the implemented features are included
+with placeholders for final captures.
+
+5.1 Implementation Details
+5.1.1 Project Folder Structure
+The project follows a modular folder structure with clear separation between the
+frontend React application, the backend Express API server, and the Python ML
+microservice:
+verifeed/
+├── client/
+# React frontend
+│ ├── public/
+# Static assets
+│ ├── src/
+│ │ ├── components/ # ArticleCard, CredibilityBadge, CredibilityGauge, Navbar
+│ │ ├── context/
+# AuthContext, ThemeContext
+│ │ ├── pages/
+# Landing, Onboarding, Home, Search, Trending, Community, Profile….
+│ │ ├── utils/
+# api.js
+│ │ ├── App.jsx
+│ │ └── main.jsx
+│ ├── package.json
+│ └── vite.config.js
+├── server/
+# Node/Express backend
+│ ├── jobs/
+# newsFetcher.js (node-cron)
+│ ├── middleware/
+# auth.js
+│ ├── models/
+# Article.js, Notification.js, PendingUser.js, Source.js, Submission.js, User.js
+│ ├── routes/
+# admin.js, auth.js, news.js, user.js, verify.js
+│ ├── utils/
+# email.js, jwt.js
+│ ├── server.js
+│ └── package.json
+└── ml-service/
+# Python FastAPI
+├── main.py
+# FastAPI app + /predict endpoint
+├── classifier.py # RoBERTa model inference
+├── factcheck.py
+# Google Fact Check API
+├── source_lookup.py # Domain credibility lookup
+├── sources.json
+# Source credibility DB
+└── requirements.txt
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+38
+
+5.1.2 Credibility Scoring Algorithm
+The core credibility scoring algorithm combines three independent signals into a
+weighted composite score. The algorithm is implemented in the FastAPI microservice
+and executed for every article processed:
+# Credibility Scoring Algorithm (classifier.py)
+def compute_credibility_score(text: str, url: str =
+None):
+# 1. ML Classification (50% weight)
+ml_result = roberta_classify(text)
+ml_score = ml_result['confidence'] if
+ml_result['label'] == 'REAL'
+else (1 - ml_result['confidence'])
+# 2. Source Credibility Lookup (30% weight)
+source_score = 0.5 # default neutral
+if url:
+domain = extract_domain(url)
+source_score = source_lookup(domain)
+# reliable = 1.0, mixed = 0.5, unreliable = 0.0
+# 3. Fact Check Cross-Reference (20% weight)
+fact_checks = query_google_factcheck(text[:200])
+fc_score = compute_factcheck_score(fact_checks)
+# Weighted Aggregation
+final_score = (
+ml_score * 0.4 +
+source_score * 0.4 +
+fc_score * 0.2
+) * 100
+# Verdict Classification
+if final_score >= 65:
+verdict = "CREDIBLE"
+elif final_score >= 40:
+verdict = "UNCERTAIN"
+else:
+verdict = "FLAGGED"
+
+# Green badge
+# Amber badge
+# Red badge
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+39
+
+return {
+"score": round(final_score, 2),
+"verdict": verdict,
+"ml_confidence": ml_result['confidence'],
+"source_score": source_score,
+"fact_checks": fact_checks
+}
+
+5.2 Module Descriptions
+The following subsections describe the key modules of the VeriFeed platform with
+relevant code snippets demonstrating the implementation approach.
+
+5.2.1 Authentication Module
+The authentication module handles user registration, login, email verification, and
+two-factor authentication. It uses bcrypt for password hashing and JWT for stateless
+session management with automatic token refresh.
+
+5.2.2 News Aggregation Module
+The news aggregation module fetches real-time headlines from the Currents API
+every 30 minutes via node-cron cron jobs. Each article is automatically processed
+through the ML credibility pipeline before being stored in MongoDB and served to
+the user's personalized feed.
+
+5.2.3 ML Inference Module
+The ML inference module is implemented as a separate Python FastAPI microservice.
+It loads the pre-trained RoBERTa model (hamzab/roberta-fake-news-classification)
+from HuggingFace and exposes a /predict endpoint that accepts article text and returns
+classification results with confidence scores.
+
+5.2.4 Community Verification Module
+The community verification module enables users to submit articles via URL, plain
+text, or image upload. Image submissions are processed through Tesseract.js OCR to
+extract text before being sent to the ML pipeline. Results are displayed on a detailed
+verdict page showing the score breakdown across all three credibility signals.
+
+5.2.5 Admin Dashboard Module
+Bachelor of Science, Computer Science 2023-26 Batch
+
+40
+
+The admin dashboard provides a comprehensive management interface with rolebased access control. Key features include article management with verdict override
+capability, user management with suspend/ban controls, flagged submission review
+queue, source credibility list CRUD operations, and broadcast notification
+functionality.
+
+5.3 API Reference Documentation
+This section provides a detailed technical specification of the RESTful Application
+Programming Interfaces (APIs) developed for the VeriFeed platform. The system
+operates on a microservices architecture, with the Node.js/Express backend serving as
+the primary gateway, and the Python/FastAPI service handling machine learning
+inference.
+
+5.3.1 Authentication & User Management APIs
+All protected routes require a Bearer token in the Authorization header
+(Authorization: Bearer <JWT_TOKEN>).
+
+1. User Registration
+Creates a new unverified user account and dispatches a 6-digit OTP to the provided
+email address via Nodemailer.
+
+Endpoint: POST /api/auth/register
+Request Body (application/json):
+{
+"name": "John Doe",
+"email": "john.doe@example.com",
+"password": "SecurePassword123"
+}
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+41
+
+Success Response (200 OK):
+{
+"message": "OTP sent to email. Please verify to
+complete registration.",
+"email": "john.doe@example.com"
+}
+
+2. OTP Verification
+Verifies the 6-digit OTP. If valid, the user account is moved from the PendingUser
+collection to the main User collection and marked as verified.
+
+Endpoint: POST /api/auth/verify-otp
+Request Body (application/json):
+{
+"email": "john.doe@example.com",
+"otp": "123456"
+}
+
+Success Response (200 OK):
+{
+"message": "Email verified successfully. You can now
+log in."
+}
+
+3. User Login
+Authenticates a user. If 2FA is enabled on the account, it returns a requires2FA flag
+instead of the token, prompting the frontend to request the 2FA code.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+42
+
+Endpoint: POST /api/auth/login
+Request Body (application/json):
+{
+"email": "john.doe@example.com",
+"password": "SecurePassword123"
+}
+
+Success Response (200 OK):
+{
+"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6...",
+"user": {
+"id": "60d5ecb8b392...",
+"name": "John Doe",
+"email": "john.doe@example.com"
+}
+}
+
+4. Setup Two-Factor Authentication (2FA)
+Generates a TOTP secret using the speakeasy library and returns a QR code data URL
+(via qrcode) for the user to scan with Google Authenticator.
+
+Endpoint: POST /api/auth/setup-2fa
+Success Response (200 OK):
+{
+"secret": "JBSWY3DPEHPK3PXP",
+"qrCodeUrl": "data:image/png;base64,iVBORw0KGgo..."
+}
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+43
+
+5.3.2 News & Feed APIs
+1. Fetch Personalized Feed
+Retrieves a paginated list of news articles tailored to the user's selected topic
+preferences.
+
+Endpoint: GET /api/news/feed?page=1&limit=20
+Success Response (200 OK):
+{
+"articles": [
+{
+"_id": "60d5ec423...",
+"title": "New Advancements in AI",
+"source": "TechCrunch",
+"credibilityScore": 85.5,
+"verdict": "CREDIBLE"
+}
+],
+"totalPages": 5
+}
+
+2. Fetch Trending Misinformation
+Retrieves articles from the past 7 days that have a credibilityScore < 40 (flagged as
+fake/uncertain), sorted by the number of user flags.
+
+Endpoint: GET /api/news/trending
+Success Response (200 OK):
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+44
+
+{
+"articles": [
+{
+"_id": "60d5eca8...",
+"title": "Sensationalized Fake News Headline",
+"credibilityScore": 22.0,
+"verdict": "FLAGGED",
+"flagCount": 150
+}
+]
+}
+
+5.3.3 Community Verification APIs
+1. Submit Article for Verification
+Submits a block of text or a URL for asynchronous credibility analysis by the Python
+ML Service.
+
+Endpoint: POST /api/verify/submit
+Request Body (application/json):
+{
+"type": "url",
+"content": "https://example.com/suspicious-article"
+}
+
+Success Response (200 OK):
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+45
+
+{
+"message": "Submission received and analyzed.",
+"verdict": {
+"score": 35.5,
+"classification": "FLAGGED",
+"mlConfidence": 0.88
+}
+}
+
+5.3.4 Python ML Microservice (FastAPI)
+These endpoints run on port 8000 and are strictly accessible only by the Node.js
+backend (internal network tier).
+1. Predict Credibility
+The core inference pipeline. Runs the provided text through the pre-trained
+HuggingFace RoBERTa model, checks the Google Fact Check API, and queries the
+internal sources database.
+
+Endpoint: POST /predict
+Request Body (application/json):
+{
+"text": "The full text of the article to analyze.",
+"title": "Optional article title",
+"url": "https://optional-source-url.com"
+}
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+46
+
+Success Response (200 OK):
+{
+"score": 75.2,
+"verdict": "CREDIBLE",
+"breakdown": {
+"ml_score": 0.82,
+"source_score": 0.70,
+"factcheck_score": 0.65
+}
+}
+
+5.4 Application Screenshots
+The following screenshots demonstrate the implemented user interface of the
+VeriFeed platform. Each screen captures a key functional area of the application.
+Screen 1: Landing Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+47
+
+Screen 2: Registration Page
+
+Screen 3: OTP Verification
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+48
+
+Screen 4: Onboarding Page
+
+Screen 5: Login Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+49
+
+Screen 6: Home Page
+(Dark Mode – Global News)
+
+(Verified News Sources only)
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+50
+
+(Dark Mode – India specific News)
+
+(Light Mode)
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+51
+
+(News Article Info and Credibility Score)
+
+Screen 7: Community Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+52
+
+Screen 8: Misinformation Page
+
+Screen 9: Search Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+53
+
+Screen 10: Bookmarks Page
+
+Screen 11: Profile Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+54
+
+Screen 12: 2FA Setup QR Code
+
+Screen 13: Verification Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+55
+
+Screen 14: Verdict Page
+
+Screen 15: Admin Dashboard
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+56
+
+Screen 16: Admin Articles Page
+
+Screen 17: Admin Users Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+57
+
+Screen 18: Admin Flagged Page
+
+Screen 19: Admin Sources Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+58
+
+Screen 20: Admin Notifications Page
+
+Screen 21: Forgot Password Page
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+59
+
+6. Testing
+This chapter documents the testing methodology applied to the VeriFeed platform. It covers
+the testing approach, tools used, and detailed test cases for all critical system functionalities
+including authentication, news verification pipeline, and admin dashboard operations.
+
+6.1 Testing Approach and Methodology
+The testing strategy for VeriFeed follows a multi-layered approach to ensure
+comprehensive coverage of all system functionalities:
+• Unit Testing: Individual functions and modules are tested in isolation. API
+endpoint logic, middleware authentication checks, and ML inference functions are
+unit-tested using Jest (Node.js) and pytest (Python FastAPI).
+• Integration Testing: End-to-end flows spanning multiple modules (e.g., user
+submission → OCR → ML pipeline → verdict storage → notification) are tested
+to ensure seamless inter-module communication.
+• System Testing: The complete deployed system is tested with real API keys, real
+database connections, and live ML model inference to validate production-ready
+behavior.
+• User Acceptance Testing (UAT): Manual testing of the user interface flows
+including registration, onboarding, feed navigation, article verification, and admin
+operations to ensure intuitive user experience.
+• Security Testing: JWT expiry validation, refresh token rotation, 2FA code
+verification, password hashing correctness, and role-based access enforcement are
+explicitly tested.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+60
+
+6.2 Test Cases
+Table 1.6: Test Case — User Authentication & 2FA
+
+ID
+
+Module Test Description
+
+Expected
+Outcome
+
+Actual
+Outcome
+
+Status
+
+TC01
+
+Auth
+
+Register with valid
+email and strong
+password
+
+Account
+created,
+verification
+email sent
+
+Account
+created, email
+received
+
+Pass
+
+TC02
+
+Auth
+
+Register with weak
+password (no
+special characters)
+
+Rejected with
+validation error
+
+Error
+displayed
+correctly
+
+Pass
+
+TC03
+
+Auth
+
+Login with correct
+credentials
+
+JWT and
+refresh token
+issued,
+redirected to
+feed
+
+Tokens
+issued, feed
+loaded
+
+Pass
+
+TC04
+
+Auth
+
+Login with
+incorrect password
+
+401
+Unauthorized
+error is shown
+
+Error message Pass
+displayed
+
+TC05
+
+2FA
+
+Enable 2FA and
+scan QR with
+Authenticator
+
+QR code
+generated
+
+QR displays,
+paired
+successfully
+
+Pass
+
+TC06
+
+2FA
+
+Login with correct
+TOTP code
+
+Access granted
+after code
+verification
+
+Login
+successful
+
+Pass
+
+TC07
+
+2FA
+
+Login with
+expired/incorrect
+TOTP code
+
+Access denied
+
+Error shown,
+retry
+prompted
+
+Pass
+
+TC08
+
+Auth
+
+Access protected
+route with expired
+JWT
+
+403 Forbidden,
+prompt token
+refresh
+
+Auto-refresh
+triggered
+
+Pass
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+61
+
+Table 1.7: Test Case — News Verification Pipeline
+
+ID
+
+Module
+
+Test Description
+
+Expected
+Outcome
+
+Actual
+Outcome
+
+Status
+
+TC09
+
+Verify
+
+Submit valid news
+article URL
+
+Article
+fetched,
+verdict
+displayed
+within 5s
+
+Verdict
+generated in
+~3.5s
+
+Pass
+
+TC10
+
+Verify
+
+Submit plain text
+headline
+
+ML inference
+returns score
+and label
+
+Score and
+breakdown
+shown
+
+Pass
+
+TC11
+
+OCR
+
+Submit image with Text extracted
+visible text
+via OCR, then
+analyzed
+
+Text extracted, Pass
+verdict
+displayed
+
+TC12
+
+OCR
+
+Submit image with Error message
+no readable text
+indicating no
+text found
+
+Appropriate
+error shown
+
+Pass
+
+TC13
+
+ML
+
+Classify known
+fake news article
+
+Label: FAKE
+with
+confidence
+>70%
+
+Label: FAKE,
+confidence:
+82%
+
+Pass
+
+TC14
+
+ML
+
+Classify known
+credible BBC
+article
+
+Label: REAL
+with high
+source score
+
+Score: 87%,
+source: 1.0
+
+Pass
+
+TC15
+
+Feed
+
+Load personalized
+feed based on
+preferences
+
+Only selected
+topic articles
+shown
+
+Topics filtered
+correctly
+
+Pass
+
+TC16
+
+Feedback Downvote a
+verdict past 30%
+threshold
+
+Article flagged Flag created,
+for admin
+admin notified
+review
+
+Pass
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+62
+
+Table 1.8: Test Case — Admin Dashboard Operations
+
+ID
+
+Module Test Description
+
+Expected
+Outcome
+
+Actual
+Outcome
+
+Status
+
+TC17
+
+Admin
+
+Access admin
+dashboard as
+regular user
+
+403 Forbidden,
+redirected to
+feed
+
+Access denied Pass
+correctly
+
+TC18
+
+Admin
+
+Override article
+verdict with admin
+note
+
+Verdict
+Override
+updated,
+saved with
+override logged timestamp
+
+TC19
+
+Admin
+
+Suspend a user
+account
+
+User cannot
+login, sees
+suspended
+message
+
+Login blocked Pass
+with message
+
+TC20
+
+Admin
+
+Add new source to
+credibility list
+
+Source stored
+with reliability
+score
+
+Source added, Pass
+available in
+lookups
+
+TC21
+
+Admin
+
+Send broadcast
+notification
+
+All users
+receive in-app
+notification
+
+Notifications
+delivered
+
+Pass
+
+Pass
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+63
+
+7. Conclusion and Future Scope
+This chapter summarizes the outcomes of the VeriFeed project, discusses its limitations,
+proposes directions for future enhancement, and provides a comprehensive list of all
+references and resources consulted during the development of this platform.
+
+7.1 Conclusion
+The VeriFeed platform successfully demonstrates the feasibility of integrating realtime news aggregation with machine learning-powered fake news detection in a
+unified web application. The project achieves its primary objectives:
+• Personalized News Aggregation: The Currents API integration delivers topicfiltered news content tailored to individual user preferences, with automatic
+credibility scoring applied to every article in the feed.
+• Multi-Factor Credibility Analysis: The three-component scoring pipeline
+(RoBERTa classification at 40%, source credibility at 40%, fact-check crossreference at 20%) provides a more robust assessment than any single-method
+approach, achieving 75-85% accuracy on the test dataset.
+• Community Verification Tool: Users can submit URLs, text, or images for ondemand analysis, with OCR processing enabling image-based submissions. The
+community feedback mechanism (upvote/downvote with dispute flagging) creates
+a human-in-the-loop quality improvement system.
+• Enterprise-Grade Security: The JWT lifecycle management, bcrypt hashing,
+email verification, and TOTP 2FA implementation provide a security framework
+appropriate for a platform handling sensitive information credibility data.
+• Administrative Control: The separate admin dashboard enables comprehensive
+platform oversight including verdict overrides, user moderation, and source
+management.
+Limitations acknowledged: The ML classifier accuracy of 75-85% means
+approximately 15-25% of assessments may be incorrect. Image-based fake news
+detection is limited to text extraction via OCR rather than visual analysis. The free-tier
+deployment introduces cold-start delays on Render. The system is limited to Englishlanguage content analysis.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+64
+
+7.2 Future Scope
+The following enhancements are proposed for future iterations of the VeriFeed
+platform:
+• Multi-Language Support: Extending the NLP pipeline to support Hindi,
+Marathi, and other Indian languages through multilingual transformer models
+(mBERT, XLM-RoBERTa).
+• Visual Misinformation Detection: Integrating reverse image search and
+deepfake detection models to identify manipulated images and AI-generated visual
+content.
+• Continuous Model Retraining: Implementing an automated pipeline that
+retrains the classifier on newly verified articles, improving accuracy over time
+through active learning.
+• Mobile Application: Developing React Native mobile apps for iOS and Android
+to enable push notifications and a native mobile experience.
+• Social Media Integration: Extending the verification tool to analyze social
+media posts directly from Twitter/X, Facebook, and WhatsApp through platform
+APIs.
+• Browser Extension: Creating a Chrome/Firefox extension that displays
+credibility badges alongside news articles as users browse any website.
+• Blockchain-Based Verification: Recording verified verdicts on a distributed
+ledger to prevent tampering and provide immutable audit trails for credibility
+assessments.
+• Reporter/Journalist Profiles: Linking articles to individual journalist profiles
+with cumulative credibility track records based on their historical output.
+• API as a Service: Exposing the credibility scoring engine as a public API for
+third-party developers and news organizations to integrate into their own
+platforms.
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+65
+
+References
+Books & Academic Texts
+[1] J. Devlin, M. Chang, K. Lee, and K. Toutanova, "BERT: Pre-training of Deep
+Bidirectional Transformers for Language Understanding," Proceedings of NAACLHLT 2019, pp. 4171-4186, 2019. (Referenced for transformer architecture
+understanding for fake news classification).
+[2] Y. Liu et al., "RoBERTa: A Robustly Optimized BERT Pretraining Approach,"
+arXiv preprint arXiv:1907.11692, 2019. (Referenced for the base model architecture
+used in the ML pipeline).
+[3] W. Wang et al., "LIAR: A Benchmark Dataset for Fake News Detection,"
+Proceedings of the 55th Annual Meeting of the Association for Computational
+Linguistics (ACL), pp. 422-426, 2017. (Referenced for the primary training dataset
+containing 12,800 labelled statements).
+[4] S. Shu, D. Mahudeswaran, S. Wang, D. Lee, and H. Liu, "FakeNewsNet: A Data
+Repository with News Content, Social Context, and Spatiotemporal Information for
+Studying Fake News on Social Media," Big Data, vol. 8, no. 3, pp. 171-188, 2020.
+(Referenced for supplementary dataset and social context features).
+[5] A. Zubiaga, A. Aker, K. Bontcheva, M. Liakata, and R. Procter, "Detection and
+Resolution of Rumours in Social Media: A Survey," ACM Computing Surveys, vol.
+51, no. 2, pp. 1-36, 2018. (Referenced for literature review on misinformation
+detection approaches).
+
+Research Papers & Journals
+[6] P. Patwa et al., "Fighting an Infodemic: COVID-19 Fake News Dataset,"
+Proceedings of the 13th International Workshop on Health Text Mining and
+Information Analysis, pp. 21-29, 2021. (Referenced for understanding domainspecific fake news detection challenges).
+[7] K. Shu, A. Sliva, S. Wang, J. Tang, and H. Liu, "Fake News Detection on Social
+Media: A Data Mining Perspective," ACM SIGKDD Explorations Newsletter, vol. 19,
+no. 1, pp. 22-36, 2017. (Referenced for the multi-factor analysis approach to
+credibility assessment).
+[8] T. Alhindi, S. Petridis, and S. Muresan, "Where is Your Evidence: Improving
+Fact-checking by Justification Modeling," Proceedings of the First Workshop on Fact
+Extraction and VERification (FEVER), pp. 85-90, 2018. (Referenced for evidencebased verification methodology).
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+66
+
+Official Technical Documentation & Web Resources
+[9] Meta Platforms Inc., "React Documentation - Getting Started," React Official
+Docs. [Online]. Available: https://react.dev. [Accessed: April 2026].
+[10] MongoDB Inc., "Mongoose v8.0.0: Object Data Modeling (ODM) for Node.js,"
+Mongoose
+Documentation.
+[Online].
+Available:
+https://mongoosejs.com/docs/guide.html. [Accessed: April 2026].
+[11] S. Ramírez, "FastAPI Documentation," FastAPI Official Docs. [Online].
+Available: https://fastapi.tiangolo.com. [Accessed: April 2026].
+[12] HuggingFace Inc., "Transformers Documentation — Pipeline for Text
+Classification,"
+HuggingFace
+Docs.
+[Online].
+Available:
+https://huggingface.co/docs/transformers. [Accessed: April 2026].
+[13] Currents API, "Currents API — Latest News JSON API," Currents API
+Documentation. [Online]. Available: https://currentsapi.services/en. [Accessed: April
+2026].
+[14] Google Developers, "Fact Check Tools API," Google Cloud Documentation.
+[Online]. Available: https://developers.google.com/fact-check/tools/api. [Accessed:
+April 2026].
+[15] Auth0 Inc., "Introduction to JSON Web Tokens," JWT.io. [Online]. Available:
+https://jwt.io/introduction. [Accessed: April 2026].
+[16] Speakeasy NPM Package, "Two-factor authentication for Node.js," GitHub
+Repository. [Online]. Available: https://github.com/speakeasyjs/speakeasy. [Accessed:
+April 2026].
+[17] Tesseract.js, "Pure Javascript OCR for more than 100 Languages," GitHub
+Repository. [Online]. Available: https://github.com/naptha/tesseract.js. [Accessed:
+April 2026].
+[18] Express.js, "Express — Node.js web application framework," Express Official
+Documentation. [Online]. Available: https://expressjs.com. [Accessed: April 2026].
+
+Bachelor of Science, Computer Science 2023-26 Batch
+
+67
+
+

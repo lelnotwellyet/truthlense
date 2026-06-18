@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-navy-900 text-gray-100 font-sans;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-navy-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-navy-600 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-navy-500;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+  }
+  .glass-sm {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl;
+  }
+  .glass-hover {
+    @apply glass transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-accent/5;
+  }
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-400 to-emerald-400 bg-clip-text text-transparent;
+  }
+  .gradient-bg {
+    @apply bg-gradient-to-r from-accent-600 to-accent-400;
+  }
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-semibold text-white gradient-bg 
+           hover:shadow-lg hover:shadow-accent/30 transition-all duration-300
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl font-semibold glass hover:bg-white/10 transition-all duration-300;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white 
+           placeholder-gray-400 focus:outline-none focus:border-accent/50 focus:ring-2 
+           focus:ring-accent/20 transition-all duration-300;
+  }
+  .badge-credible {
+    @apply inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-emerald/20 text-emerald-400 border border-emerald/30;
+  }
+  .badge-likely {
+    @apply inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-accent/20 text-accent-400 border border-accent/30;
+  }
+  .badge-uncertain {
+    @apply inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-amber/20 text-amber-400 border border-amber/30;
+  }
+  .badge-misleading {
+    @apply inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-rose/20 text-rose-400 border border-rose/30;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
